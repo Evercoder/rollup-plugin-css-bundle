@@ -1,6 +1,6 @@
 # rollup-plugin-css-bundle
 
-A [Rollup](https://github.com/rollup/rollup) plugin who's sole purpose is to collect all the CSS files you import into your project and bundle them to a single CSS file.
+A [Rollup](https://github.com/rollup/rollup) plugin whose sole purpose is to collect all the CSS files you import into your project and bundle them into a single glorious CSS file.
 
 ## Usage
 
@@ -22,7 +22,7 @@ export default {
 
 ## Options
 
-Like all good-behaved Rollup plugins, `cssbundle` supports the `include` and `exclude` options that let you configure on which files the plugin should run. Additionally:
+Like all well-behaved Rollup plugins, `cssbundle` supports the `include` and `exclude` options that let you configure on which files the plugin should run. Additionally:
 
 __output__: _String_ is an optional path wherein to put the extracted CSS; when ommitted, we use the bundle's filename to fashion a name for the bundled CSS.
 
@@ -48,3 +48,5 @@ export default {
 	]
 };
 ```
+
+That's it. Enjoy! ✌️
