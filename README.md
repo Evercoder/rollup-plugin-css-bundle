@@ -1,5 +1,7 @@
 # rollup-plugin-css-bundle
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/danburzo/rollup-plugin-css-bundle.svg)](https://greenkeeper.io/)
+
 A [Rollup](https://github.com/rollup/rollup) plugin whose sole purpose is to collect all the CSS files you import into your project and bundle them into a single glorious CSS file. Refreshingly, it preserves the order in which the CSS files are imported. Soberingly, it does not generate source maps. 
 
 ## Usage
