@@ -1,6 +1,6 @@
-import { createFilter } from 'rollup-pluginutils';
-import postcss from 'postcss';
-import fs from 'fs';
+import fs from 'fs-extra';
+import path from 'path';
+import utils from 'rollup-pluginutils';
 
 export default (opts) => {
 
@@ -8,10 +8,11 @@ export default (opts) => {
 	let bundles = {};
 
 	const options = Object.assign({
-		include: ['**/*.css']
+		include: ['**/*.css'],
+		transform: code => code
 	}, opts);
 
-	const filter = createFilter(options.include, options.exclude);
+	const filter = utils.createFilter(options.include, options.exclude);
 
 	return {
 		name: 'cssbundle',
@@ -21,9 +22,9 @@ export default (opts) => {
 			return await fs.readFile(id, 'utf8');
 		},
 
-		transform(code, id) {
+		async transform(code, id) {
 			if (!filter(id)) return;
-			styles[id] = code;
+			styles[id] = await options.transform(code);
 			return '';
 		},
 
@@ -36,8 +37,14 @@ export default (opts) => {
 		},
 
 		onwrite(opts) {
-			let dest = options.file || opts.file.replace(/\.js$/, '.css');
-			fs.writeFile(dest, bundles[opts.file]);
+			fs.outputFile(
+				options.output || 
+				path.join(
+					path.dirname(opts.file), 
+					path.basename(opts.file, path.extname(opts.file)) + '.css'
+				),
+				bundles[opts.file]
+			);
 		}
 	}
 }

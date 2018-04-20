@@ -2,9 +2,9 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var rollupPluginutils = require('rollup-pluginutils');
-require('postcss');
-var fs = _interopDefault(require('fs'));
+var fs = _interopDefault(require('fs-extra'));
+var path = _interopDefault(require('path'));
+var utils = _interopDefault(require('rollup-pluginutils'));
 
 var index = (opts) => {
 
@@ -12,10 +12,11 @@ var index = (opts) => {
 	let bundles = {};
 
 	const options = Object.assign({
-		include: ['**/*.css']
+		include: ['**/*.css'],
+		transform: code => code
 	}, opts);
 
-	const filter = rollupPluginutils.createFilter(options.include, options.exclude);
+	const filter = utils.createFilter(options.include, options.exclude);
 
 	return {
 		name: 'cssbundle',
@@ -25,9 +26,9 @@ var index = (opts) => {
 			return await fs.readFile(id, 'utf8');
 		},
 
-		transform(code, id) {
+		async transform(code, id) {
 			if (!filter(id)) return;
-			styles[id] = code;
+			styles[id] = await options.transform(code);
 			return '';
 		},
 
@@ -40,8 +41,14 @@ var index = (opts) => {
 		},
 
 		onwrite(opts) {
-			let dest = options.file || opts.file.replace(/\.js$/, '.css');
-			fs.writeFile(dest, bundles[opts.file]);
+			fs.outputFile(
+				options.output || 
+				path.join(
+					path.dirname(opts.file), 
+					path.basename(opts.file, path.extname(opts.file)) + '.css'
+				),
+				bundles[opts.file]
+			);
 		}
 	}
 }
