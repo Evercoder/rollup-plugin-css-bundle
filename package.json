@@ -1,14 +1,13 @@
 {
-  "dependencies": {
-    "fs-extra": "^5.0.0",
-    "rollup-pluginutils": "^2.0.1"
-  },
   "name": "rollup-plugin-css-bundle",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "module": "src/index.js",
   "repository": "git@github.com:danburzo/rollup-plugin-css-bundle.git",
   "author": "Dan Burzo <danburzo@gmail.com>",
+  "keywords": [
+    "rollup-plugin"
+  ],
   "license": "MIT",
   "files": [
     "src",
@@ -16,6 +15,10 @@
   ],
   "devDependencies": {
     "rollup": "^0.58.1"
+  },
+  "dependencies": {
+    "fs-extra": "^5.0.0",
+    "rollup-pluginutils": "^2.0.1"
   },
   "scripts": {
     "build": "rollup -c",
