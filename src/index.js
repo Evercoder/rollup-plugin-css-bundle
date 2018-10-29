@@ -29,8 +29,10 @@ export default (opts) => {
 		},
 
 		ongenerate(opts, bundle) {
+			let modules = Array.isArray(bundle.modules) ? bundle.modules 
+														: Object.getOwnPropertyNames(bundle.modules)
 			let css = Object.entries(styles)
-				.sort((a, b) => bundle.modules.indexOf(a[0]) - bundle.modules.indexOf(b[0]))
+				.sort((a, b) => modules.indexOf(a[0]) - modules.indexOf(b[0]))
 				.map(entry => entry[1])
 				.join('\n');
 			bundles[opts.file] = css;
