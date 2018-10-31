@@ -1,6 +1,6 @@
 {
 	"name": "rollup-plugin-css-bundle",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "A Rollup plugin to extract CSS into a single external file",
 	"main": "dist/index.js",
 	"module": "src/index.js",
