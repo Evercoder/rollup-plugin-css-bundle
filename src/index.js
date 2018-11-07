@@ -4,7 +4,6 @@ import utils from 'rollup-pluginutils';
 
 export default opts => {
 	let styles = {};
-	let bundles = {};
 
 	const options = Object.assign(
 		{
@@ -30,30 +29,28 @@ export default opts => {
 			return '';
 		},
 
-		ongenerate(opts, bundle) {
-			// Depending on the Rollup version,
-			// the `modules` will be either an array
-			// or an object with key-value pairs.
-			let modules = Array.isArray(bundle.modules)
-				? bundle.modules
-				: Object.getOwnPropertyNames(bundle.modules);
-			let css = Object.entries(styles)
-				.sort((a, b) => modules.indexOf(a[0]) - modules.indexOf(b[0]))
-				.map(entry => entry[1])
-				.join('\n');
-			bundles[opts.file] = css;
-		},
+		generateBundle(opts, bundle) {
+			for (const file in bundle) {
+				// Depending on the Rollup version,
+				// the `modules` will be either an array
+				// or an object with key-value pairs.
+				let modules = Array.isArray(bundle[file].modules)
+					? bundle[file].modules
+					: Object.getOwnPropertyNames(bundle[file].modules);
+				let css = Object.entries(styles)
+					.sort((a, b) => modules.indexOf(a[0]) - modules.indexOf(b[0]))
+					.map(entry => entry[1])
+					.join('\n');
 
-		onwrite(opts) {
-			fs.outputFile(
-				options.output ||
+				fs.outputFile(
+					options.output ||
 					path.join(
 						path.dirname(opts.file),
-						path.basename(opts.file, path.extname(opts.file)) +
-							'.css'
+						path.basename(file, path.extname(opts.file)) + '.css'
 					),
-				bundles[opts.file]
-			);
+					css
+				);
+			}
 		}
 	};
 };
